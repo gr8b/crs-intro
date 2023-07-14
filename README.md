@@ -2,4 +2,4 @@
 
 |Intro|Details|
 |-----|-------|
-|[<img src="./scalextric/preview.png" width="250"/>](./scalextric/main.asm)|code, gfx: mad-crs<br>music: alex|
+|[<img src="./scalextric/preview.png" width="480"/>](./scalextric/main.asm)|code, gfx: mad-crs<br>music: alex|
