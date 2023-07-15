@@ -9,7 +9,7 @@ music_stop  EQU 0xc006
 
 main
             DI
-            LD SP,0x5fb3
+            ; LD SP,0x5fb3
             LD HL,0x4000
             LD DE,0x5801
             LD BC,0x02ff
@@ -120,8 +120,8 @@ skip_color_change
             AND 0x08
             JP NZ,no_cheat_mode
             LD A,0x32           ; LD (xxxx),a
-            LD (enable_cheat1),A
-            LD (enable_cheat2),A
+            LD (game_loader_disp + enable_cheat1),A
+            LD (game_loader_disp + enable_cheat2),A
 no_cheat_mode
             CALL music_stop
             LD HL,0x59e0
@@ -131,12 +131,15 @@ _cls2
             LD (HL),A
             INC HL
             DJNZ _cls2
+    EI
+    RET     ; code below starts game loading using TR-DOS call to 0x3d13
             LD HL,game_loader
             LD DE,0x5d40
             LD BC,0x0064
             PUSH DE
             LDIR
             RET
+game_loader_disp = $ - 0x5d40
 game_loader
     DISP   0x5d40
             LD HL,0
