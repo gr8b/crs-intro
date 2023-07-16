@@ -1,15 +1,16 @@
     DEVICE ZXSPECTRUM48
 
-music_init  EQU 0x33c5
-music_play  EQU 0x33c5
-music_stop  EQU 0x33c5
+music_init  EQU 0xea60
+music_play  EQU 0xea66
+music_stop  EQU 0xea60
 
-            ORG 0xc000
+    ORG 0xc000
 main
             CALL init
             CALL music_init
 main_loop
             HALT
+            CALL music_play
             CALL cheat_keypress
             LD A,0x7f
             IN A,(0xfe)
@@ -18,6 +19,7 @@ main_loop
             IM 1
             LD A,0x3f
             LD I,A
+            CALL music_stop
             LD HL,0x2758
             EXX
             LD IY,0x5c3a
@@ -67,7 +69,6 @@ up_d
             LD D,A
             RET
 init
-            DI
             LD HL,0x4000
             LD DE,0x4001
             LD BC,0x0fff
@@ -98,6 +99,7 @@ init
             LD (HL),0xff
             LDIR
 
+            DI
             LD HL,im2_handler
             LD (0xe9ff),HL
             LD A,0xe9
@@ -106,13 +108,20 @@ init
 
             CALL cheat_init
             CALL logo_init
-            call scroller_init
+            CALL scroller_init
+            LD HL,music_bin + music_bin_length - 1
+            LD DE,music_init + music_bin_length - 1
+            LD BC,music_bin_length
+            LDDR
             EI
             RET
 
     INCLUDE "scroller.asm"
     INCLUDE "logopen.asm"
     INCLUDE "cheat.asm"
+music_bin
+    INCBIN "music.bin"
+music_bin_length = $ - music_bin
 main_end
 
     DISPLAY "750cc: code start=",main," length=",$-main

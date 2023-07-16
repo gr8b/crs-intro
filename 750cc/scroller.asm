@@ -10,15 +10,14 @@ scroller_buffer_mem = 0xfdde
 scroller_init
             LD HL,scroller_buffer_mem
             LD DE,scroller_buffer_mem + 1
-            LD BC,0x0300
-            LD (HL),C
+            LD BC,0x0220
+            LD (HL),0x00
             LDIR
             RET
 
 scroller_draw
             LD DE,0x4900
 ref_scroller_draw_pos = $ - 2
-data_BF6E:
             CALL clear_line
             LD A,0x00
 ref_scroller_pos = $ - 1
