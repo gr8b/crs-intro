@@ -22,19 +22,6 @@ logo_gfx_mem = logo_draw - (logo_bin_length * 8)
     DISPLAY "logo_bin: ",logo_bin,", ",logo_bin_length
     DISPLAY "logo_sin_bin: ",logo_sin_bin,", ",logo_sin_bin_length
 
-incd_ypos
-            INC D
-            LD A, 0x07
-            AND D
-            RET NZ
-            LD A,E
-            ADD A,0x20
-            LD E,A
-            RET C
-            LD A,D
-            SUB 0x08
-            LD D,A
-            RET
 logo_init
             LD DE,logo_gfx_mem + (8 * logo_bin_length) - 1
             LD BC,logo_bin_length
@@ -92,7 +79,7 @@ logoline_generate_loop2
             EX DE,HL
             POP BC
             POP DE
-            CALL incd_ypos
+            CALL down_d
             JR logoline_generate_loop1
 logo_generate_end
             POP AF              ; SP += 2
