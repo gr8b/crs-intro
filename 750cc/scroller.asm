@@ -37,38 +37,9 @@ ref_scroller_pos = $ - 1
             LD BC,0x0200
 scroller_screen_copy:
             PUSH DE
+        DUP 32
             LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
-            LDI
+        EDUP
             INC HL
             INC HL
             POP DE
@@ -89,14 +60,12 @@ clear_line_loop
             RET
 
 scroller_shift	
-            LD HL,scroller_buffer_mem + 0x0300 - 1
-            LD C,0x03
+            LD HL,scroller_buffer_mem + 0x0220 - 1
+            LD BC,0x2003
 scroller_shift_loop1
-            LD B,0x00
-scroller_shift_loop2
             RLD
             DEC HL
-            DJNZ scroller_shift_loop2
+            DJNZ scroller_shift_loop1
             DEC C
             JR NZ,scroller_shift_loop1
             LD A,0x88

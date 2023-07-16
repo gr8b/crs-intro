@@ -4,13 +4,24 @@ music_init  EQU 0x33c5
 music_play  EQU 0x33c5
 music_stop  EQU 0x33c5
 
-    ORG 0xc000
+            ORG 0xc000
 main
             CALL init
             CALL music_init
 main_loop
             HALT
-            JR main_loop
+            CALL cheat_keypress
+            LD A,0x7f
+            IN A,(0xfe)
+            RRA
+            JR C,main_loop
+            IM 1
+            LD A,0x3f
+            LD I,A
+            LD HL,0x2758
+            EXX
+            LD IY,0x5c3a
+            RET
 
 im2_handler
             DI
@@ -57,9 +68,6 @@ up_d
             RET
 init
             DI
-            CALL logo_init
-            call scroller_init
-
             LD HL,0x4000
             LD DE,0x4001
             LD BC,0x0fff
@@ -95,11 +103,16 @@ init
             LD A,0xe9
             LD I,A
             IM 2
+
+            CALL cheat_init
+            CALL logo_init
+            call scroller_init
             EI
             RET
 
     INCLUDE "scroller.asm"
     INCLUDE "logopen.asm"
+    INCLUDE "cheat.asm"
 main_end
 
     DISPLAY "750cc: code start=",main," length=",$-main
